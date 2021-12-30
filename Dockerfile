@@ -1,15 +1,14 @@
 FROM node:13-alpine
 
-RUN mkdir -p /home/app
+ENV NODE_ENV=production
 
-COPY . /home/app
+WORKDIR /app
 
-# set default dir so that next commands executes in /home/app dir
-WORKDIR /home/app
+COPY ["package.json", "package-lock.json*", "./"]
 
-# will execute npm install in /home/app because of WORKDIR
-RUN npm install
+RUN npm install --production
 
-# no need for /home/app/server.js because of WORKDIR
-CMD ["node", "server.js"]
+COPY . .
+
+CMD [ "node", "server.js" ]
 
